@@ -20,7 +20,7 @@ class Storage
 
   public function get($id)
   {
-    $stmt = $this->db->prepare('SELECT state FROM site_state WHERE id=?');
+    $stmt = $this->db->prepare('SELECT id, state, content FROM site_state WHERE id=?');
     $stmt->setFetchMode(PDO::FETCH_CLASS, Section::class);
     $stmt->execute([$id]);
     return $stmt->fetch();
