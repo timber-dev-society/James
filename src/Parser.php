@@ -7,11 +7,6 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Parser
 {
-  const NEW_EVENT = 'new';
-  const UPDATE_EVENT = 'update';
-  const NOTHING_CHANGE_EVENT = 'nothing_change';
-  const SOMETHING_CHANGE_EVENT = 'something_change';
-
   /**
    * @var array
    */
@@ -29,15 +24,15 @@ class Parser
   {
     $this->store = new Storage($storageDir);
 
-    $this->on(self::NEW_EVENT, function ($newSection) {
+    $this->on(Event::NEW_SECTION, function ($newSection) {
       $this->store->create($newSection);
     });
 
-    $this->on(self::UPDATE_EVENT, function ($newSection, $oldSection) {
+    $this->on(Event::UPDATE_SECTION, function ($newSection, $oldSection) {
       $this->store->update($newSection);
     });
 
-    $this->on(self::SOMETHING_CHANGE_EVENT, function () {
+    $this->on(Event::SOMETHING_CHANGE, function () {
       $this->resolveChanges();
     });
   }
@@ -67,11 +62,11 @@ class Parser
 
     $newState = $this->isSomethingHasChange();
     if (!$newState) {
-      $this->dispatch(self::NOTHING_CHANGE_EVENT);
+      $this->dispatch(Event::NOTHING_CHANGE);
       return;
     }
 
-    $this->dispatch(self::SOMETHING_CHANGE_EVENT);
+    $this->dispatch(Event::SOMETHING_CHANGE);
 
     $section = Section::create('global', $newState);
     $this->store->update($section);
@@ -82,18 +77,18 @@ class Parser
     if (!isset($this->events[$event])) { return; }
 
     switch ($event) {
-      case self::NOTHING_CHANGE_EVENT:
-      case self::SOMETHING_CHANGE_EVENT:
+      case Event::NOTHING_CHANGE:
+      case Event::SOMETHING_CHANGE:
         foreach ($this->events[$event] as $callable) {
           $callable();
         }
         break;
-      case self::NEW_EVENT:
+      case Event::NEW_SECTION:
         foreach ($this->events[$event] as $callable) {
           $callable($newSection);
         }
         break;
-      case self::UPDATE_EVENT:
+      case Event::UPDATE_SECTION:
         foreach ($this->events[$event] as $callable) {
           $callable($newSection, $oldSection);
         }
@@ -129,7 +124,7 @@ class Parser
       if ($oldSection !== false && $state === $oldSection->state) { return; }
 
       $newSection = Section::create($sectionId, $state, $content);
-      $event = $oldSection === false ? self::NEW_EVENT : self::UPDATE_EVENT;
+      $event = $oldSection === false ? Event::NEW_SECTION : Event::UPDATE_SECTION;
 
       $this->dispatch($event, $newSection, $oldSection);
     });

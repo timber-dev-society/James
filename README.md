@@ -7,9 +7,7 @@
 ```php
 require 'vendor/autoload.php';
 
-use PayBox\Parser;
-
-(new Parser(__DIR__))->on('event', function () {
+(new PayBox\Parser(__DIR__))->on('event', function () {
   'Do what you whant';
 })->parse()
 ```
@@ -22,8 +20,9 @@ To see a full example watch example.php
 
 ```php
 use PayBox\Parser;
+use PayBox\Event;
 
-(new Parser(__DIR__))->on(Parser::SOMETHING_CHANGE_EVENT, function () {
+(new Parser(__DIR__))->on(Event::SOMETHING_CHANGE, function () {
   print 'Something new or updated' . PHP_EOL;
 })->parse()
 ```
@@ -32,8 +31,9 @@ use PayBox\Parser;
 
 ```php
 use PayBox\Parser;
+use PayBox\Event;
 
-(new Parser(__DIR__))->on(Parser::NOTHING_CHANGE_EVENT, function () {
+(new Parser(__DIR__))->on(Event::NOTHING_CHANGE, function () {
   print 'Nothing append from the last time' . PHP_EOL;
 })->parse()
 ```
@@ -43,8 +43,9 @@ use PayBox\Parser;
 
 ```php
 use PayBox\Parser;
+use PayBox\Event;
 
-(new Parser(__DIR__))->on(Parser::NEW_EVENT, function ($section) {
+(new Parser(__DIR__))->on(Event::NEW_SECTION, function ($section) {
   print 'Something new append' . PHP_EOL;
   print $section->content . PHP_EOL;
 })->parse()
@@ -55,8 +56,9 @@ use PayBox\Parser;
 
 ```php
 use PayBox\Parser;
+use PayBox\Event;
 
-(new Parser(__DIR__))->on(Parser::UPDATE_EVENT, function ($newSection, $oldSection) {
+(new Parser(__DIR__))->on(Event::UPDATE_SECTION, function ($newSection, $oldSection) {
   print 'Something has been updated' . PHP_EOL;
   print 'before : ' . PHP_EOL;
   print $oldSection->content . PHP_EOL;
