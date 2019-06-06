@@ -56,7 +56,7 @@ use PayBox\Parser;
 ```php
 use PayBox\Parser;
 
-(new Parser(__DIR__))->on(Parser::NEW_EVENT, function ($newSection, $oldSection) {
+(new Parser(__DIR__))->on(Parser::UPDATE_EVENT, function ($newSection, $oldSection) {
   print 'Something has been updated' . PHP_EOL;
   print 'before : ' . PHP_EOL;
   print $oldSection->content . PHP_EOL;
