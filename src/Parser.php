@@ -60,7 +60,8 @@ class Parser
   {
     $this->dom = $this->getDom();
 
-    $newState = $this->isSomethingHasChange();
+    $newState = $this->somethingHasChange();
+
     if (!$newState) {
       $this->dispatch(Event::NOTHING_CHANGE);
       return;
@@ -133,9 +134,9 @@ class Parser
   /**
    * @return bool
    */
-  private function isSomethingHasChange()
+  private function somethingHasChange()
   {
-    $globalState = sha1($this->dom->filter('.l-content-h.i-widgets .i-cf p strong')->text());
+    $globalState = sha1($this->dom->filter('.l-content-h.i-widgets .i-cf')->text());
     $globalSection = $this->store->get('global');
 
     return $globalSection->state === $globalState ? false : $globalState;
