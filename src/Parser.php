@@ -2,7 +2,6 @@
 
 namespace PayBox;
 
-use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Parser
@@ -16,13 +15,14 @@ class Parser
    */
   private $store;
   /**
-   * @var Crawler
+   * @var Tractor
    */
-  private $dom;
+  private $tractor;
 
-  public function __construct($storageDir)
+  public function __construct($tractor, $storage)
   {
-    $this->store = new Storage($storageDir);
+    $this->store = $storage;
+    $this->tractor = $tractor;
 
     $this->on(Event::NEW_SECTION, function ($newSection) {
       $this->store->create($newSection);
@@ -58,7 +58,7 @@ class Parser
    */
   public function parse()
   {
-    $this->dom = $this->getDom();
+    $this->tractor->start();
 
     $newState = $this->somethingHasChange();
 
@@ -100,9 +100,7 @@ class Parser
   private function resolveChanges()
   {
     $i = 0;
-    $nodes = $this->dom->filter('.l-content-h.i-widgets .i-cf p strong');
-
-    $nodes->each(function ($node) use (&$i) {
+    $this->tractor->getSections()->each(function ($node) use (&$i) {
       /* @var Crawler $node */
       if (($i === 10) || (++$i === 1)) { return; }
 
@@ -136,18 +134,8 @@ class Parser
    */
   private function somethingHasChange()
   {
-    $globalState = sha1($this->dom->filter('.l-content-h.i-widgets .i-cf')->text());
     $globalSection = $this->store->get('global');
 
-    return $globalSection->state === $globalState ? false : $globalState;
-  }
-
-  /**
-   * @return Crawler
-   */
-  private function getDom()
-  {
-    $client = new Client();
-    return $client->request('GET', 'http://www1.paybox.com/espace-integrateur-documentation/infos-production/');
+    return $this->tractor->somethingHasChange($globalSection->state);
   }
 }
