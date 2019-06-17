@@ -1,15 +1,14 @@
 <?php
 require 'vendor/autoload.php';
 
-use PayBox\Parser;
-use PayBox\Event;
+use James\Event;
 
-$tractor = (new PayBox\Tractor('http://www1.paybox.com/espace-integrateur-documentation/infos-production/'))
+$spyCam = (new James\SpyCam('http://www1.paybox.com/espace-integrateur-documentation/infos-production/'))
     ->setGlobalSelector('.l-content-h.i-widgets .i-cf')
     ->setSectionSelector('.l-content-h.i-widgets .i-cf p strong');
-$storage = new PayBox\Storage(__DIR__);
+$microfilm = new James\Microfilm(__DIR__);
 
-(new Parser($tractor, $storage))->on(Event::NOTHING_CHANGE, static function () {
+(new James\Bond($spyCam, $microfilm))->on(Event::NOTHING_CHANGE, static function () {
   print 'Nothing has change' . PHP_EOL;
 
 })->on(Event::SOMETHING_CHANGE, static function () {

@@ -1,5 +1,5 @@
 <?php
-namespace PayBox;
+namespace James;
 
 class Section
 {

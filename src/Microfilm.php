@@ -1,10 +1,10 @@
 <?php
 
-namespace PayBox;
+namespace James;
 
 use PDO;
 
-class Storage
+class Microfilm
 {
   private $db;
 

@@ -1,28 +1,28 @@
 <?php
 
-namespace PayBox;
+namespace James;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class Parser
+class Bond
 {
   /**
    * @var array
    */
   private $events = [];
   /**
-   * @var Storage
+   * @var MicroFilm
    */
   private $store;
   /**
-   * @var Tractor
+   * @var SpyCam
    */
-  private $tractor;
+  private $spyCam;
 
-  public function __construct($tractor, $storage)
+  public function __construct($spyCam, $microfilm)
   {
-    $this->store = $storage;
-    $this->tractor = $tractor;
+    $this->store = $microfilm;
+    $this->spyCam = $spyCam;
 
     $this->on(Event::NEW_SECTION, function ($newSection) {
       $this->store->create($newSection);
@@ -41,7 +41,7 @@ class Parser
    * @param string $event
    * @param callable $callable
    *
-   * @return Parser;
+   * @return Bond;
    */
   public function on($event, callable $callable)
   {
@@ -58,7 +58,7 @@ class Parser
    */
   public function parse()
   {
-    $this->tractor->start();
+    $this->spyCam->start();
 
     $newState = $this->somethingHasChange();
 
@@ -100,7 +100,7 @@ class Parser
   private function resolveChanges()
   {
     $i = 0;
-    $this->tractor->getSections()->each(function ($node) use (&$i) {
+    $this->spyCam->getSections()->each(function ($node) use (&$i) {
       /* @var Crawler $node */
       if (($i === 10) || (++$i === 1)) { return; }
 
@@ -136,6 +136,6 @@ class Parser
   {
     $globalSection = $this->store->get('global');
 
-    return $this->tractor->somethingHasChange($globalSection->state);
+    return $this->spyCam->somethingHasChange($globalSection->state);
   }
 }

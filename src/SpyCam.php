@@ -1,16 +1,16 @@
 <?php
-namespace PayBox;
+namespace James;
 
 
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Class Tractor
+ * Class SpyCam
  *
- * @package PayBox
+ * @package James
  */
-class Tractor
+class SpyCam
 {
     /**
      * @var string

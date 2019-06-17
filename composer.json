@@ -1,5 +1,5 @@
 {
-    "name": "ndufreche/pb-crawl",
+    "name": "devoralive/james",
     "license": "MIT",
     "require": {
         "roave/security-advisories": "dev-master",
@@ -8,12 +8,15 @@
         "ext-pdo": "*"
     },
     "autoload": {
-      "psr-4": { "PayBox\\":  "src" }
+      "psr-4": { "James\\":  "src" }
     },
     "authors": [
         {
             "name": "Nicolas Dufreche",
             "email": "n.dufreche@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
 }

@@ -1,4 +1,4 @@
-# PayBox info production page parser
+# Super autonomous website content spy
 
 ## usage
 
@@ -7,7 +7,12 @@
 ```php
 require 'vendor/autoload.php';
 
-(new PayBox\Parser(__DIR__))->on('event', function () {
+$spyCam = (new James\SpyCam('https://www.google.com/search?q=James+Bond'))
+    ->setGlobalSelector('#search')
+    ->setSectionSelector('#search .rc .r');
+$microfilm = new James\Microfilm(__DIR__, 'JamesBond');
+
+(new James\Bond($spyCam, $microfilm))->on('event', function () {
   'Do what you whant';
 })->parse()
 ```
@@ -19,10 +24,9 @@ To see a full example watch example.php
 #### SOMETHING_CHANGE_EVENT
 
 ```php
-use PayBox\Parser;
-use PayBox\Event;
+// ...
 
-(new Parser(__DIR__))->on(Event::SOMETHING_CHANGE, function () {
+(new James\Bond($spyCam, $microfilm))->on(James\Event::SOMETHING_CHANGE, function () {
   print 'Something new or updated' . PHP_EOL;
 })->parse()
 ```
@@ -30,10 +34,9 @@ use PayBox\Event;
 #### NOTHING_CHANGE_EVENT
 
 ```php
-use PayBox\Parser;
-use PayBox\Event;
+// ...
 
-(new Parser(__DIR__))->on(Event::NOTHING_CHANGE, function () {
+(new James\Bond($spyCam, $microfilm))->on(James\Event::NOTHING_CHANGE, function () {
   print 'Nothing append from the last time' . PHP_EOL;
 })->parse()
 ```
@@ -42,10 +45,9 @@ use PayBox\Event;
 #### NEW_EVENT
 
 ```php
-use PayBox\Parser;
-use PayBox\Event;
+// ...
 
-(new Parser(__DIR__))->on(Event::NEW_SECTION, function ($section) {
+(new James\Bond($spyCam, $microfilm))->on(James\Event::NEW_SECTION, function ($section) {
   print 'Something new append' . PHP_EOL;
   print $section->content . PHP_EOL;
 })->parse()
@@ -55,10 +57,9 @@ use PayBox\Event;
 #### UPDATE_EVENT
 
 ```php
-use PayBox\Parser;
-use PayBox\Event;
+// ...
 
-(new Parser(__DIR__))->on(Event::UPDATE_SECTION, function ($newSection, $oldSection) {
+(new James\Bond($spyCam, $microfilm))->on(James\Event::UPDATE_SECTION, function ($newSection, $oldSection) {
   print 'Something has been updated' . PHP_EOL;
   print 'before : ' . PHP_EOL;
   print $oldSection->content . PHP_EOL;
