@@ -3,6 +3,7 @@
     "license": "MIT",
     "require": {
         "roave/security-advisories": "dev-master",
+        "gitonomy/gitlib": "dev-master",
         "fabpot/goutte": "^3.2",
         "ext-dom": "*",
         "ext-pdo": "*"
