@@ -28,6 +28,6 @@ class Mission
 
     public static function buildId($text)
     {
-        return $this->id;
+        return sha1($text);
     }
 }

@@ -9,7 +9,10 @@
         "ext-pdo": "*"
     },
     "autoload": {
-      "psr-4": { "James\\":  "src" }
+      "psr-4": {
+          "James\\":  "src",
+          "James\\Tests\\": "tests"
+      }
     },
     "authors": [
         {
