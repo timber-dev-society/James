@@ -5,8 +5,9 @@ namespace James\Tests;
 use PHPUnit\Framework\TestCase;
 use Cz\Git\GitRepository;
 use Symfony\Component\Filesystem\Filesystem;
+use Gitonomy\Git\{ Repository, Diff\FileChange };
 
-final class ChangeDetectionTest extends TestCase
+final class GetContentChangeTest extends TestCase
 {
   private const REPO = __DIR__ . '/repo';
   private const STORE = self::REPO . '/content';
@@ -28,27 +29,9 @@ TXT;
     $fs->mkdir(self::REPO);
 
     $this->repo = GitRepository::init(self::REPO);
-    file_put_contents(self::STORE, self::CONTENT);
+    file_put_contents(self::STORE, self::CONTENT . PHP_EOL);
     $this->repo->addAllChanges();
     $this->repo->commit('1');
-  }
-
-  public function testInit()
-  {
-    $fs = new Filesystem();
-
-    if ($fs->exists(self::REPO)) { $fs->remove(self::REPO); }
-    $fs->mkdir(self::REPO);
-
-    $repo = GitRepository::init(self::REPO);
-
-    file_put_contents(self::STORE, self::CONTENT);
-
-    $this->assertTrue($repo->hasChanges());
-    $repo->addAllChanges();
-    $repo->commit('1');
-
-    $this->assertNotNull($repo->getLastCommitId());
   }
 
   public function testUpdate()
@@ -56,22 +39,27 @@ TXT;
     $this->init();
     $before = $this->repo->getLastCommitId();
 
-    file_put_contents(self::STORE, PHP_EOL . 'TUT', FILE_APPEND);
+    file_put_contents(self::STORE, self::CONTENT . PHP_EOL . 'TUT' . PHP_EOL);
 
-    $this->assertTrue($this->repo->hasChanges());
     $this->repo->addAllChanges();
     $this->repo->commit('2');
 
     $after = $this->repo->getLastCommitId();
-    $this->assertNotEquals($before, $after);
-  }
+    $repository = new Repository(self::GIT_STORE);
+    $diff = $repository->getDiff($before . '..' . $after);
+    $files = $diff->getFiles();
+    $file = reset($files);
+    $this->assertEquals($file->getAdditions(), 1);
+    $this->assertEquals($file->getDeletions(), 0);
 
-  public function testNoChanges()
-  {
-    $this->init();
+    foreach($file->getChanges() as $change) {
+      foreach ($change->getLines() as $data) {
+        list($type, $line) = $data;
+        if ($type === FileChange::LINE_ADD) {
+          $this->assertEquals($line, 'TUT');
+        }
 
-    file_put_contents(self::STORE, self::CONTENT);
-
-    $this->assertFalse($this->repo->hasChanges());
+      }
+    }
   }
 }
