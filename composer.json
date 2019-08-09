@@ -6,7 +6,9 @@
         "gitonomy/gitlib": "dev-master",
         "fabpot/goutte": "^3.2",
         "ext-dom": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "czproject/git-php": "^3.17",
+        "symfony/filesystem": "^4.3"
     },
     "autoload": {
       "psr-4": {

@@ -1,3 +1,6 @@
 vendor/
-.idea
 database.sqlite
+tests/repo
+
+.idea
+.vscode
