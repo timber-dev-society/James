@@ -18,34 +18,60 @@ sed do eiusmod tempor incididunt.
 TXT;
 
   private $repo;
+  private $fs;
+
+  public function init()
+  {
+    $fs = new Filesystem();
+
+    if ($fs->exists(self::REPO)) { $fs->remove(self::REPO); }
+    $fs->mkdir(self::REPO);
+
+    $this->repo = GitRepository::init(self::REPO);
+    file_put_contents(self::STORE, self::CONTENT);
+    $this->repo->addAllChanges();
+    $this->repo->commit('1');
+  }
 
   public function testInit()
   {
     $fs = new Filesystem();
 
-    if ($fs->exists(self::REPO)) {
-      $fs->remove(self::REPO);
-    }
+    if ($fs->exists(self::REPO)) { $fs->remove(self::REPO); }
     $fs->mkdir(self::REPO);
 
-    $this->repo = GitRepository::init(self::REPO);
+    $repo = GitRepository::init(self::REPO);
+
     file_put_contents(self::STORE, self::CONTENT);
 
-    $this->assertTrue($this->repo->hasChanges());
-    $this->repo->addAllChanges();
-    $this->repo->commit('1');
+    $this->assertTrue($repo->hasChanges());
+    $repo->addAllChanges();
+    $repo->commit('1');
 
-    $this->assertNotNull($this->repo->getLastCommitId());
+    $this->assertNotNull($repo->getLastCommitId());
   }
 
   public function testUpdate()
   {
+    $this->init();
+    $before = $this->repo->getLastCommitId();
+
     file_put_contents(self::STORE, PHP_EOL . 'TUT', FILE_APPEND);
 
     $this->assertTrue($this->repo->hasChanges());
     $this->repo->addAllChanges();
     $this->repo->commit('2');
 
-    $this->assertNotNull($this->repo->getLastCommitId());
+    $after = $this->repo->getLastCommitId();
+    $this->assertNotEquals($before, $after);
+  }
+
+  public function testNoChanges()
+  {
+    $this->init();
+
+    file_put_contents(self::STORE, self::CONTENT);
+
+    $this->assertFalse($this->repo->hasChanges());
   }
 }
