@@ -1,7 +1,7 @@
 <?php
-namespace James;
+namespace James\Events;
 
-class EventManager
+class Manager
 {
   /**
    * @var array<Event>
@@ -15,6 +15,8 @@ class EventManager
   public function addEventListener(array $events): void
   {
     foreach ($events as list($name, $event)) {
+      if (!$event instanceof Event) { continue; }
+
       $this->events[$name] = $event;
       $this->listeners[$name] = [];
     }

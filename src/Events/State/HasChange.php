@@ -1,7 +1,9 @@
 <?php
 namespace James\Events\State;
 
-final class HasChange
+use James\Events\Event;
+
+final class HasChange extends Event
 {
   public const event = 'STATE_HAS_CHANGE';
 

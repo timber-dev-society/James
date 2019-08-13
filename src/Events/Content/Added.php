@@ -1,7 +1,9 @@
 <?php
 namespace James\Events\Content;
 
-final class Added
+use James\Events\Event;
+
+final class Added extends Event
 {
   public const event = 'CONTENT_ADDED';
 

@@ -1,7 +1,6 @@
 <?php
 namespace James;
 
-use Doctrine\Common\EventManager;
 use James\Events\State\HasChange;
 
 class Bond
@@ -27,7 +26,7 @@ class Bond
 
   private function initEvents(): void
   {
-    $this->eventManager = new EventManager();
+    $this->eventManager = new Events\Manager();
     new Events\Content($eventManager);
     new Events\State($eventManager);
   }

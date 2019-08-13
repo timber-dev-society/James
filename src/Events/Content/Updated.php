@@ -1,7 +1,9 @@
 <?php
 namespace James\Events\Content;
 
-final class Updated
+use James\Events\Event;
+
+final class Updated extends Event
 {
   public const event = 'CONTENT_UPDATED';
 

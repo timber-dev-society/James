@@ -1,7 +1,9 @@
 <?php
 namespace James\Events\Content;
 
-final class Deleted
+use James\Events\Event;
+
+final class Deleted extends Event
 {
   public const event = 'CONTENT_DELETED';
 
