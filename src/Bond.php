@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace James;
 
 use James\Events\State\HasChange;
@@ -14,9 +15,9 @@ class Bond
    */
   private $spyCam;
 
-  public function __construct($spyCam)
+  public function __construct(Mission $mission)
   {
-    $this->spyCam = $spyCam;
+    $this->mission = $mission;
     $this->initEvents();
 
     $this->on(Events\State\HasChange::event, function () {

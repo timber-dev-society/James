@@ -47,7 +47,7 @@ public function testAdd()
     $after = $this->repo->getLastCommitId();
 
 
-    $tut = $this->repo->execute(['diff', $before . '..' . $after]);
+    $tut = $this->repo->execute(['diff', 'HEAD^..master']);
 
     $repository = new Repository(self::GIT_STORE);
     $diff = $repository->getDiff($before . '..' . $after);
@@ -83,7 +83,7 @@ TXT;
 
     $after = $this->repo->getLastCommitId();
     $repository = new Repository(self::GIT_STORE);
-    $diff = $repository->getDiff($before . '..' . $after);
+    $diff = $repository->getDiff('HEAD^..master');
     $files = $diff->getFiles();
     $file = reset($files);
     $this->assertEquals($file->getAdditions(), 0);
@@ -123,7 +123,7 @@ TXT;
 
     $after = $this->repo->getLastCommitId();
     $repository = new Repository(self::GIT_STORE);
-    $diff = $repository->getDiff($before . '..' . $after);
+    $diff = $repository->getDiff('HEAD^..master');
     $files = $diff->getFiles();
     $file = reset($files);
     $this->assertEquals($file->getAdditions(), 1);

@@ -1,27 +1,27 @@
 <?php
 require 'vendor/autoload.php';
 
-use James\Event;
+use James\{ M, Q };
+use James\Events\{ Content, State };
 
-$spyCam = (new James\SpyCam('http://www1.paybox.com/espace-integrateur-documentation/infos-production/'))
+$spyCam = (new James\SpyCam(''))
     ->setGlobalSelector('.l-content-h.i-widgets .i-cf')
     ->setSectionSelector('.l-content-h.i-widgets .i-cf p strong');
 $microfilm = new James\Microfilm(__DIR__);
+$mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentation/infos-production/', '.l-content-h.i-widgets .i-cf p');
 
-(new James\Bond($spyCam, $microfilm))->on(Event::NOTHING_CHANGE, static function () {
+(new James\Bond($mission))->on(State::HAS_NOT_CHANGE, static function () {
   print 'Nothing has change' . PHP_EOL;
 
-})->on(Event::SOMETHING_CHANGE, static function () {
+})->on(State::HAS_CHANGE, static function () {
   print 'Something has change' . PHP_EOL;
 
-})->on(Event::NEW_SECTION, static function ($newSection) {
-  print 'new event detected' . PHP_EOL;
-  print $newSection->content . PHP_EOL;
+})->on(Content::ADDED, static function ($event) {
+  print 'Content Added' . PHP_EOL;
+  print $event->getLine() . PHP_EOL;
 
-})->on(Event::UPDATE_SECTION, static function ($newSection, $oldSection) {
-  print 'event ' . $newSection->id . ' Updated' . PHP_EOL;
-  $changes = str_replace($oldSection->content, '', $newSection->content);
+})->on(Content::UPDATED, static function ($event) {
+  print 'Content Updated' . PHP_EOL;
+  $changes = str_replace($event->getBefore(), '', $event->getAfter());
   print $changes . PHP_EOL;
-
-})->parse();
-
+});

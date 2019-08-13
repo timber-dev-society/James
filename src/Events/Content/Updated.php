@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace James\Events\Content;
 
 use James\Events\Event;
