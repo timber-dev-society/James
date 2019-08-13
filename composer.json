@@ -8,8 +8,7 @@
         "ext-dom": "*",
         "ext-pdo": "*",
         "czproject/git-php": "^3.17",
-        "symfony/filesystem": "^4.3",
-        "doctrine/event-manager": "^1.0"
+        "symfony/filesystem": "^4.3"
     },
     "autoload": {
       "psr-4": {

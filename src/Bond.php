@@ -2,6 +2,7 @@
 namespace James;
 
 use Doctrine\Common\EventManager;
+use James\Events\State\HasChange;
 
 class Bond
 {
@@ -19,12 +20,12 @@ class Bond
     $this->spyCam = $spyCam;
     $this->initEvents();
 
-    $this->on(Event::SOMETHING_CHANGE, function () {
+    $this->on(Events\State\HasChange::event, function () {
       $this->resolveChanges();
     });
   }
 
-  private function initEvents()
+  private function initEvents(): void
   {
     $this->eventManager = new EventManager();
     new Events\Content($eventManager);
@@ -37,14 +38,14 @@ class Bond
    *
    * @return Bond;
    */
-  public function on($event, callable $callable)
+  public function on(string $event, callable $callable): self
   {
-    array_unshift($this->events[$event], $callable);
+    $this->eventManager->attach(($event, $callable);
 
     return $this;
   }
 
-  private function dispatch($event)
+  private function dispatch(string $event): void
   {
     $this->eventManager->dispatch($event);
   }
