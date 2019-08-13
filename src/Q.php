@@ -1,21 +1,24 @@
 <?php
 declare(strict_types=1);
 namespace James;
+
 use James\Bond;
 
 class M
 {
-    private $stuff = [];
+    private $equipments = [];
 
-    public function addStuff($stuff): void
+    public function addEquipment(Equipment\Gear $equipment): self
     {
-      $this->stuff[] = $stuff;
+      $this->equipments[] = $equipment;
+
+      return $this
     }
 
-    public function equip(Bond $jamesBond)
+    public function equip(Bond $OO7): void
     {
-      foreach ($this->stuff as $stuff) {
-        $jamesBond->attach($stuff->on(), $stuff->do());
+      foreach ($this->equipments as $equipment) {
+        $OO7->attach($equipment->on(), $equipment->do());
       }
     }
 }

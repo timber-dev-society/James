@@ -53,17 +53,6 @@ class SpyCam
      * @param string $selector
      * @return $this
      */
-    public function setGlobalSelector($selector)
-    {
-        $this->globalSelector = $selector;
-
-        return $this;
-    }
-
-    /**
-     * @param string $selector
-     * @return $this
-     */
     public function setSectionSelector($selector)
     {
         $this->sectionSelector = $selector;

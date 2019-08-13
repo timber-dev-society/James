@@ -7,15 +7,15 @@ use James\Events\State\HasChange;
 class Bond
 {
   /**
-   * @var EventManager
+   * @var Events\Manager
    */
   private $eventManager;
   /**
    * @var SpyCam
    */
-  private $spyCam;
+  private $mission;
 
-  public function __construct(Mission $mission)
+  public function __construct(M $mission)
   {
     $this->mission = $mission;
     $this->initEvents();
@@ -23,6 +23,18 @@ class Bond
     $this->on(Events\State\HasChange::event, function () {
       $this->resolveChanges();
     });
+  }
+
+  public function getMission(): M
+  {
+    return $this->mission;
+  }
+
+  public function getEquipment(Q $quartermaster): self
+  {
+    $quartermaster->equip($this);
+
+    return $this;
   }
 
   private function initEvents(): void
@@ -46,8 +58,8 @@ class Bond
     return $this;
   }
 
-  private function dispatch(string $event): void
+  private function dispatch(string $event, ?array $args = null): void
   {
-    $this->eventManager->dispatch($event);
+    $this->eventManager->raise($event, $args);
   }
 }
