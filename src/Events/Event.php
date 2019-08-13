@@ -1,5 +1,5 @@
 <?php
-namespace James;
+namespace James\Events;
 
 abstract class Event
 {

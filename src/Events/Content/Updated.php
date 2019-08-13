@@ -10,23 +10,23 @@ final class Updated extends Event
   private $before;
   private $after;
 
-  public function __construct(array $params)
+  public function __construct(?array $params)
   {
     list($before, $after) = $params;
     $this->line = reset($params);
   }
 
-  public function getLine()
+  public function getLine(): string
   {
     return $this->after;
   }
 
-  public function getBefore()
+  public function getBefore(): string
   {
     return $this->before;
   }
 
-  public function getAfter()
+  public function getAfter(): string
   {
     return $this->after;
   }

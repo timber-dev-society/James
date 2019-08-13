@@ -12,11 +12,9 @@ class Manager
    */
   private $listeners;
 
-  public function addEventListener(array $events): void
+  public function addEvent(array $events): void
   {
     foreach ($events as list($name, $event)) {
-      if (!$event instanceof Event) { continue; }
-
       $this->events[$name] = $event;
       $this->listeners[$name] = [];
     }
@@ -25,13 +23,15 @@ class Manager
   public function attach(string $key, callable $callback): void
   {
     if (!isset($this->events[$key])) { return; }
-    array_unshift($this->$listeners[$key], $callback);
+    array_unshift($this->listeners[$key], $callback);
   }
 
-  public function raise(string $key, array $args)
+  public function raise(string $key, ?array $args = null): void
   {
-    if (!isset($this->events[$key])) { return false; }
+    if (!isset($this->events[$key])) { return; }
     $event = new $this->events[$key]($args);
+
+    if (!$event instanceof Event) { return; }
 
     foreach ($this->listeners[$key] as $listener) {
       $listener($event);

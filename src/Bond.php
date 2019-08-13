@@ -27,6 +27,7 @@ class Bond
   private function initEvents(): void
   {
     $this->eventManager = new Events\Manager();
+
     new Events\Content($eventManager);
     new Events\State($eventManager);
   }
@@ -39,7 +40,7 @@ class Bond
    */
   public function on(string $event, callable $callable): self
   {
-    $this->eventManager->attach(($event, $callable);
+    $this->eventManager->attach($event, $callable);
 
     return $this;
   }

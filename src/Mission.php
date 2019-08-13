@@ -25,9 +25,4 @@ class Mission
 
         return $self;
     }
-
-    public static function buildId($text)
-    {
-        return sha1($text);
-    }
 }

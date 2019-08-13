@@ -1,14 +1,14 @@
 <?php
 namespace James\Events;
+
 use James\Events\Content\{ Added, Updated, Deleted };
-use James\EventManager;
 
 final class ContentDispatcher
 {
   /** @var EventManager */
   private $eventManager;
 
-  public function __construct(EventManager $eventManager)
+  public function __construct(Manager $eventManager)
   {
     $this->eventManager = $eventManager;
     $this->eventManager->addEventListener([

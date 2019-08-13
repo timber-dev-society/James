@@ -2,14 +2,13 @@
 namespace James\Events;
 
 use James\Events\State\{ HasChange, HasNotChange };
-use James\EventManager;
 
 final class State
 {
   /** @var EventManager */
   private $eventManager;
 
-  public function __construct(EventManager $eventManager)
+  public function __construct(Manager $eventManager)
   {
     $this->eventManager = $eventManager;
     $this->eventManager->addEventListener([

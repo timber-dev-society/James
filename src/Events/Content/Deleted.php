@@ -9,12 +9,12 @@ final class Deleted extends Event
 
   private $line;
 
-  public function __construct(array $params)
+  public function __construct(?array $params)
   {
     $this->line = reset($params);
   }
 
-  public function getLine()
+  public function getLine(): string
   {
     return $this->line;
   }
