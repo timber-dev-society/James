@@ -24,7 +24,7 @@ class Aston implements GearInterface
     return $client->request($this->method, $this->uri);
   }
 
-  public function on()
+  public function on(): string
   {
     return After::event;
   }

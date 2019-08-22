@@ -6,7 +6,7 @@ use James\Events\Event;
 
 interface GearInterface
 {
-  public function on(Event $event);
+  public function on(): string;
 
   public function do(): callback;
 }

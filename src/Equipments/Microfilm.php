@@ -23,7 +23,7 @@ class Microfilm implements GearInterface
     }
   }
 
-  public function on()
+  public function on(): string
   {
     return After::event;
   }
