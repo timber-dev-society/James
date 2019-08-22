@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace James;
 
-use James\Events\State\HasChange;
+use James\Events\{ State\HasChange, Collect\Before};
 
 class Bond
 {
@@ -20,7 +20,7 @@ class Bond
     $this->mission = $mission;
     $this->initEvents();
 
-    $this->on(Events\State\HasChange::event, function () {
+    $this->on(HasChange::event, function () {
       $this->resolveChanges();
     });
   }
@@ -28,6 +28,14 @@ class Bond
   public function getMission(): M
   {
     return $this->mission;
+  }
+
+  /**
+   * James start the mission
+   */
+  public function go(): void
+  {
+    $this->dispatch(Before::event);
   }
 
   public function getEquipment(Q $quartermaster): self
@@ -60,6 +68,7 @@ class Bond
 
   private function dispatch(string $event, ?array $args = null): void
   {
+    $args = [ 'OO7' => $this ] + $args;
     $this->eventManager->raise($event, $args);
   }
 }

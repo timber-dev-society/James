@@ -12,7 +12,7 @@ class M
     {
       $this->equipments[] = $equipment;
 
-      return $this
+      return $this;
     }
 
     public function equip(Bond $OO7): void

@@ -6,8 +6,12 @@ abstract class Event
 {
   private $stopped = false;
 
-  public function __construct(array $params)
-  {}
+  private $OO7 = null;
+
+  public function __construct(?array $params)
+  {
+    $this->OO7 = $params['OO7'];
+  }
 
   public final function stopPropagation(): void
   {
@@ -17,5 +21,10 @@ abstract class Event
   public final function isStop(): bool
   {
     return $this->stopped;
+  }
+
+  public function getOO7(): James\Bond
+  {
+    return $this->OO7;
   }
 }

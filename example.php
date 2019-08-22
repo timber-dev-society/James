@@ -24,8 +24,10 @@ $mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentat
     print 'Content Updated' . PHP_EOL;
     $changes = str_replace($event->getBefore(), '', $event->getAfter());
     print $changes . PHP_EOL;
+
   })->on(Content::DELETED, static function ($event) {
     print 'Content Deleted' . PHP_EOL;
     print $event->getLine() . PHP_EOL;
     print $changes . PHP_EOL;
+
   });

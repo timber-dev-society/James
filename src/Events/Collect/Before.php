@@ -9,5 +9,7 @@ final class Before extends Event
   public const event = 'BEFORE_DATA_COLLECT';
 
   public function __construct(?array $params)
-  {}
+  {
+    parent::__construct($params);
+  }
 }
