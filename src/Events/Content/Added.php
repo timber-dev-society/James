@@ -10,12 +10,12 @@ final class Added extends Event
 
   private $line;
 
-  public function __construct(?array $params)
+  public function __construct(array $args)
   {
-    $this->line = reset($params);
+    $this->line = $args['added'];
   }
 
-  public function getLine(): string
+  public function getAdded(): string
   {
     return $this->line;
   }

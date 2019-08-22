@@ -7,63 +7,81 @@
 ```php
 require 'vendor/autoload.php';
 
-$spyCam = (new James\SpyCam('https://www.google.com/search?q=James+Bond'))
-    ->setGlobalSelector('#search')
-    ->setSectionSelector('#search .rc .r');
-$microfilm = new James\Microfilm(__DIR__, 'JamesBond');
+use James\{ M, Q, Bond as OO7, Equipments };
 
-(new James\Bond($spyCam, $microfilm))->on('event', function () {
-  'Do what you whant';
-})->parse()
+$q = (new Q())->addEquipment(new Equipments\Aston())
+              ->addEquipment(new Equipments\Microfilm('/path/to/store/data'));
+
+$mission = new M('job-id', 'http://www.url-to-track.com', '.content:selector');
+
+$OO7 = (new OO7($mission))->getEquipment($q);
+
+$OO7->go();
 ```
 
 ### Events
 
-To see a full example watch example.php
+To see a full fonctionnal example watch example.php
 
-#### SOMETHING_CHANGE_EVENT
+#### Something has change
 
 ```php
 // ...
+use James\Events\State;
 
-(new James\Bond($spyCam, $microfilm))->on(James\Event::SOMETHING_CHANGE, function () {
+$OO7->on(State::HAS_CHANGE, function () {
   print 'Something new or updated' . PHP_EOL;
-})->parse()
+})->go();
 ```
 
-#### NOTHING_CHANGE_EVENT
+#### Nothing has change
 
 ```php
 // ...
+use James\Events\State;
 
-(new James\Bond($spyCam, $microfilm))->on(James\Event::NOTHING_CHANGE, function () {
+$OO7->on(State::HAS_NOT_CHANGE, function () {
   print 'Nothing append from the last time' . PHP_EOL;
-})->parse()
+})->go();
 ```
 
 
-#### NEW_EVENT
+#### Add event
 
 ```php
 // ...
+use James\Events\Content;
 
-(new James\Bond($spyCam, $microfilm))->on(James\Event::NEW_SECTION, function ($section) {
-  print 'Something new append' . PHP_EOL;
-  print $section->content . PHP_EOL;
-})->parse()
+$OO7->on(James\Content::ADDED, function ($event) {
+  print 'New content available' . PHP_EOL;
+  print $event->getAdded() . PHP_EOL;
+})->go();
 ```
 
 
-#### UPDATE_EVENT
+#### Update event
 
 ```php
 // ...
+use James\Events\Content;
 
-(new James\Bond($spyCam, $microfilm))->on(James\Event::UPDATE_SECTION, function ($newSection, $oldSection) {
-  print 'Something has been updated' . PHP_EOL;
+$OO7->on(Content::UPDATED, function ($event) {
+  print 'Content has been updated' . PHP_EOL;
   print 'before : ' . PHP_EOL;
-  print $oldSection->content . PHP_EOL;
+  print $event->getRemoved() . PHP_EOL;
   print 'after : ' . PHP_EOL;
-  print $newSection->content . PHP_EOL;
+  print $event->getAdded() . PHP_EOL;
+})->go();
+```
+
+#### Delete event
+
+```php
+// ...
+use James\Events\Content;
+
+$OO7->on(Content::DELETED, function ($event) {
+  print 'Content has been removed' . PHP_EOL;
+  print $event->getRemoved() . PHP_EOL;
 })->parse()
 ```

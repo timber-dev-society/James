@@ -8,27 +8,22 @@ final class Updated extends Event
 {
   public const event = 'CONTENT_UPDATED';
 
-  private $before;
-  private $after;
+  private $deleted;
+  private $added;
 
-  public function __construct(?array $params)
+  public function __construct(array $args)
   {
-    list($before, $after) = $params;
-    $this->line = reset($params);
+    $this->deleted = $args['deleted'];
+    $this->added = $args['added'];
   }
 
-  public function getLine(): string
+  public function getDeleted(): string
   {
-    return $this->after;
+    return $this->deleted;
   }
 
-  public function getBefore(): string
+  public function getAdded(): string
   {
-    return $this->before;
-  }
-
-  public function getAfter(): string
-  {
-    return $this->after;
+    return $this->added;
   }
 }
