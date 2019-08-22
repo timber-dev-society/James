@@ -7,7 +7,7 @@
 ```php
 require 'vendor/autoload.php';
 
-use James\{ M, Q, Bond as OO7, Equipments };
+use James\{ Bond as OO7, M, Q, Equipments };
 
 $q = (new Q())->addEquipment(new Equipments\Aston())
               ->addEquipment(new Equipments\Microfilm('/path/to/store/data'));
@@ -68,7 +68,7 @@ use James\Events\Content;
 $OO7->on(Content::UPDATED, function ($event) {
   print 'Content has been updated' . PHP_EOL;
   print 'before : ' . PHP_EOL;
-  print $event->getRemoved() . PHP_EOL;
+  print $event->getDeleted() . PHP_EOL;
   print 'after : ' . PHP_EOL;
   print $event->getAdded() . PHP_EOL;
 })->go();
@@ -82,6 +82,6 @@ use James\Events\Content;
 
 $OO7->on(Content::DELETED, function ($event) {
   print 'Content has been removed' . PHP_EOL;
-  print $event->getRemoved() . PHP_EOL;
-})->parse()
+  print $event->getDeleted() . PHP_EOL;
+})->go();
 ```

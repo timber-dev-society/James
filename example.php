@@ -1,7 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 
-use James\{ M, Q, Bond as OO7, Equipments };
+use James\{ Bond as OO7, M, Q, Equipments };
 use James\Events\{ Content, State };
 
 $q = (new Q())->addEquipment(new Equipments\Aston())
