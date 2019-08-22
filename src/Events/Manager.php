@@ -13,7 +13,7 @@ class Manager
    */
   private $listeners;
 
-  public function addEvent(array $events): void
+  public function addEvents(array $events): void
   {
     foreach ($events as list($name, $event)) {
       $this->events[$name] = $event;

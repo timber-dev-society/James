@@ -8,5 +8,5 @@ interface GearInterface
 {
   public function on(): string;
 
-  public function do(): callback;
+  public function do(): callable;
 }

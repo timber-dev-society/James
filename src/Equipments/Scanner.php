@@ -12,7 +12,7 @@ class Scanner implements GearInterface
     return HasChange::event;
   }
 
-  public function do(): callback
+  public function do(): callable
   {
     return function (HasChange $event) {
       $OO7 = $event->getOO7();

@@ -10,13 +10,9 @@ final class Content
   const UPDATED = Updated::event;
   const DELETED = Deleted::event;
 
-  /** @var EventManager */
-  private $eventManager;
-
   public function __construct(Manager $eventManager)
   {
-    $this->eventManager = $eventManager;
-    $this->eventManager->addEventListener([
+    $eventManager->addEvents([
       [Added::event, Added::class],
       [Updated::event, Updated::class],
       [Deleted::event, Deleted::class],

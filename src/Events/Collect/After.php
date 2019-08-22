@@ -26,6 +26,6 @@ final class After extends Event
 
   public function getContent()
   {
-    return $this->content
+    return $this->content;
   }
 }

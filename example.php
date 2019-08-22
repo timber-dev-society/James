@@ -4,10 +4,13 @@ require 'vendor/autoload.php';
 use James\{ Bond as OO7, M, Q, Equipments };
 use James\Events\{ Content, State };
 
-$q = (new Q())->addEquipment(new Equipments\Aston())
-              ->addEquipment(new Equipments\Microfilm(__DIR__ . '/data'));
+try {
+$q = new Q();
+$q->addEquipment(new Equipments\Aston());
+$q->addEquipment(new Equipments\Microfilm(__DIR__ . '/data'));
 
 $mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentation/infos-production/', '.l-content-h.i-widgets .i-cf p');
+
 
 (new OO7($mission))->getEquipment($q)
   ->on(State::HAS_NOT_CHANGE, static function () {
@@ -30,3 +33,8 @@ $mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentat
     print $event->getDeleted() . PHP_EOL;
     print $changes . PHP_EOL;
   })->go();
+
+} catch (Throwable $e) {
+  echo $e->getMessage();
+  echo $e->getTraceAsString();
+}

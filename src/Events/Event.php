@@ -8,9 +8,9 @@ abstract class Event
 
   private $OO7 = null;
 
-  public function __construct(?array $params)
+  public function __construct(array $args)
   {
-    $this->OO7 = $params['OO7'];
+    $this->OO7 = $args['OO7'];
   }
 
   public final function stopPropagation(): void
