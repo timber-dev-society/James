@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace James\Equipments;
 
-
-use Goutte\Client;
+use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-use James\Events\Collect\{ Before, After };
+use James\Events\{ Collect, Collect\Before };
 
 /**
  * Class SpyCam
@@ -15,18 +15,28 @@ use James\Events\Collect\{ Before, After };
  */
 class Aston implements GearInterface
 {
-  /**
-   * @return Crawler
-   */
-  private function getDom()
+
+  private function getDocument(string $method, string $url): ResponseInterface
   {
     $client = new Client();
-    return $client->request($this->method, $this->uri);
+    return $client->request($method, $url);
+  }
+
+  private function getContent(string $dom, string $selector): array
+  {
+    $crawler = new Crawler(null, null);
+    $crawler->addContent($dom, 'text/html');
+    $nodes = [];
+    $crawler->filter($selector)->each(static function ($node) use (&$nodes) {
+      $nodes[] = $node->text();
+    });
+
+    return $nodes;
   }
 
   public function on(): string
   {
-    return After::event;
+    return Collect::BEFORE;
   }
 
   public function do(): callable
@@ -35,11 +45,13 @@ class Aston implements GearInterface
       $OO7 = $event->getOO7();
       $mission = $OO7->getMission();
 
-      $dom = $this->getDom($mission->getMethod(), $mission->getUrl());
+      $document = $this->getDocument($mission->getMethod(), $mission->getUrl());
+      $dom = $document->getBody()->getContents();
+      $content = $this->getContent($dom, $mission->getSelector());
 
-      $OO7->dispatch(After::event,[
+      $OO7->dispatch(Collect::AFTER,[
         'dom' => $dom,
-        'content' => $dom->filter($mission->getSelector()),
+        'content' => implode(PHP_EOL, $content) . PHP_EOL,
       ]);
     };
   }

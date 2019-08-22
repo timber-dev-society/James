@@ -1,6 +1,7 @@
 vendor/
 database.sqlite
 tests/repo
+data/
 
 .idea
 .vscode

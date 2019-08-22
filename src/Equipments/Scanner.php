@@ -16,39 +16,47 @@ class Scanner implements GearInterface
   {
     return function (HasChange $event) {
       $OO7 = $event->getOO7();
-      $mission = $james->getMission();
+      $storageDir = $OO7->get(Microfilm::STORAGE_KEY);
+      $mission =  $OO7->getMission();
 
-      $repoPath = "{$this->dir}/{$mission->getPathname()}/.git";
+      $repoPath = "{$storageDir}/{$mission->getPathname()}/.git";
       $repo = new Repository($repoPath);
-      $diff = $repository->getDiff('HEAD^..master');
 
-      foreach($file->getChanges() as $change) {
+      foreach ($this->getChanges($repo) as $change) {
         $lines = $change->getLines();
         $ignoreNext = false;
+        $additions = $modifications = $deletions = [];
 
-        foreach ($lines as $key => $data) {
+        foreach ($lines as $key => list($type, $line)) {
+          if ($ignoreNext) { $ignoreNext = false; continue; }
 
-          list($type, $line) = $data;
-          if ($ignoreNext) {
-            $ignoreNext = false;
-            continue;
-          } elseif ($type === FileChange::LINE_REMOVE && isset($lines[$key + 1]) && $lines[$key + 1][0] === FileChange::LINE_ADD) {
-            $OO7->dispatch(Content\Updated::event, [
-              'removed' => $line,
-              'added' => $lines[$key + 1][1],
-            ]);
-            $ignoreNext = true;
-          } elseif ($type === FileChange::LINE_REMOVE) {
-            $OO7->dispatch(Content\Deleted::event, [
-              'removed' => $line,
-            ]);
+          if ($type === FileChange::LINE_REMOVE) {
+
+            if (isset($lines[$key + 1]) && $lines[$key + 1][0] === FileChange::LINE_ADD) {
+              $modifications[] = [
+                  'deleted' => $line,
+                  'added' => $lines[$key + 1][1],
+              ];
+              $ignoreNext = true;
+              continue;
+            }
+            $deletions[] = [ 'deleted' => $line ];
           } elseif ($type === FileChange::LINE_ADD) {
-            $OO7->dispatch(Content\Added::event, [
-              'added' => $line,
-            ]);
+            $additions[] = [ 'added' => $line ];
           }
         }
+        if (count($additions) !== 0) { $OO7->dispatch(Content::ADDED, [ 'added' => $additions ]); }
+        if (count($modifications) !== 0) { $OO7->dispatch(Content::UPDATED, [ 'updated' => $modifications ]); }
+        if (count($deletions) !== 0) { $OO7->dispatch(Content::DELETED, [ 'deleted' => $deletions ]); }
       }
     };
+  }
+
+  private function getChanges(Repository $repo)
+  {
+    $diff = $repo->getDiff('HEAD^..master');
+    $files = $diff->getFiles();
+    $file = reset($files);
+    return $file->getChanges();
   }
 }

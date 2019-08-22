@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace James\Events;
 
+use James\Bond as OO7;
+
 abstract class Event
 {
   private $stopped = false;
@@ -23,7 +25,7 @@ abstract class Event
     return $this->stopped;
   }
 
-  public function getOO7(): James\Bond
+  public function getOO7(): OO7
   {
     return $this->OO7;
   }

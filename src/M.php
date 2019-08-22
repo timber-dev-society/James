@@ -13,6 +13,7 @@ class M
      * @param $id
      * @param $url
      * @param $selector
+     * @param $method
      *
      * @return self
      */

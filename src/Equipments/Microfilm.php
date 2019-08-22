@@ -8,6 +8,7 @@ use Cz\Git\GitRepository;
 
 class Microfilm implements GearInterface
 {
+  const STORAGE_KEY = 'storageDir';
   private $fs;
   private $dir;
   private $mission;
@@ -32,7 +33,9 @@ class Microfilm implements GearInterface
   {
     return function (After $event) {
       $OO7 = $event->getOO7();
-      $this->mission = $james->getMission();
+      $OO7->save(self::STORAGE_KEY, $this->dir);
+
+      $this->mission = $OO7->getMission();
       $this->rawContent = $event->getDom();
       $this->content = $event->getContent();
 
@@ -45,7 +48,8 @@ class Microfilm implements GearInterface
       $repo->commit('*');
 
       if ($hasChange) {
-        return $OO7->dispatch(State\HasChange::event);
+        $OO7->dispatch(State\HasChange::event);
+        return;
       }
       $OO7->dispatch(State\HasNotChange::event);
     };

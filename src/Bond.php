@@ -15,14 +15,12 @@ class Bond
    */
   private $mission;
 
+  private $memory = [];
+
   public function __construct(M $mission)
   {
     $this->mission = $mission;
     $this->initEvents();
-
-    $this->on(State::HAS_CHANGE, function () {
-      $this->resolveChanges();
-    });
   }
 
   public function getMission(): M
@@ -67,9 +65,19 @@ class Bond
     return $this;
   }
 
-  private function dispatch(string $event, ?array $args = []): void
+  public function dispatch(string $event, ?array $args = []): void
   {
     $args = [ 'OO7' => $this ] + $args;
     $this->eventManager->raise($event, $args);
+  }
+
+  public function save($key, $data): void
+  {
+    $this->memory[$key] = $data;
+  }
+
+  public function get($key, $default = null)
+  {
+    return $this->memory[$key] ?? $default;
   }
 }

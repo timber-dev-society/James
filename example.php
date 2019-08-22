@@ -8,6 +8,7 @@ try {
 $q = new Q();
 $q->addEquipment(new Equipments\Aston());
 $q->addEquipment(new Equipments\Microfilm(__DIR__ . '/data'));
+$q->addEquipment(new Equipments\Scanner());
 
 $mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentation/infos-production/', '.l-content-h.i-widgets .i-cf p');
 
@@ -31,7 +32,6 @@ $mission = new M('paybox', 'http://www1.paybox.com/espace-integrateur-documentat
   })->on(Content::DELETED, static function ($event) {
     print 'Content Deleted' . PHP_EOL;
     print $event->getDeleted() . PHP_EOL;
-    print $changes . PHP_EOL;
   })->go();
 
 } catch (Throwable $e) {
