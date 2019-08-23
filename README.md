@@ -10,7 +10,8 @@ require 'vendor/autoload.php';
 use James\{ Bond as OO7, M, Q, Equipments };
 
 $q = (new Q())->addEquipment(new Equipments\Aston())
-              ->addEquipment(new Equipments\Microfilm('/path/to/store/data'));
+              ->addEquipment(new Equipments\Microfilm('/path/to/store/data'))
+              ->addEquipment(new Equipments\Scanner());
 
 $mission = new M('job-id', 'http://www.url-to-track.com', '.content:selector');
 
