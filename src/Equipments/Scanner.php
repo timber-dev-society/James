@@ -31,23 +31,19 @@ class Scanner implements GearInterface
           if ($ignoreNext) { $ignoreNext = false; continue; }
 
           if ($type === FileChange::LINE_REMOVE) {
-
             if (isset($lines[$key + 1]) && $lines[$key + 1][0] === FileChange::LINE_ADD) {
-              $modifications[] = [
+              $OO7->dispatch(Content::UPDATED,  [
                   'deleted' => $line,
                   'added' => $lines[$key + 1][1],
-              ];
+              ]);
               $ignoreNext = true;
               continue;
             }
-            $deletions[] = [ 'deleted' => $line ];
+            $OO7->dispatch(Content::DELETED, [ 'deleted' => $line ]);
           } elseif ($type === FileChange::LINE_ADD) {
-            $additions[] = [ 'added' => $line ];
+            $OO7->dispatch(Content::ADDED, [ 'added' => $line ]);
           }
         }
-        if (count($additions) !== 0) { $OO7->dispatch(Content::ADDED, [ 'added' => $additions ]); }
-        if (count($modifications) !== 0) { $OO7->dispatch(Content::UPDATED, [ 'updated' => $modifications ]); }
-        if (count($deletions) !== 0) { $OO7->dispatch(Content::DELETED, [ 'deleted' => $deletions ]); }
       }
     };
   }

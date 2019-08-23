@@ -45,7 +45,7 @@ class Microfilm implements GearInterface
       $hasChange = $repo->hasChanges();
 
       $repo->addAllChanges();
-      $repo->commit('*');
+      $repo->commit('Bond. James Bond');
 
       if ($hasChange) {
         $OO7->dispatch(State\HasChange::event);
@@ -64,7 +64,7 @@ class Microfilm implements GearInterface
 
     file_put_contents($file, $this->rawContent);
     $repo->addAllChanges();
-    $repo->commit('*');
+    $repo->commit('Bond. James Bond');
   }
 
   private function getRepoContent()
