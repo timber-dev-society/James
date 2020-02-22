@@ -1,5 +1,5 @@
 {
-    "name": "devoralive/james",
+    "name": "ndious/james",
     "license": "MIT",
     "require": {
         "roave/security-advisories": "dev-master",
